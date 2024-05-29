@@ -2,10 +2,12 @@ package net.example.banking_app.controller;
 
 import net.example.banking_app.dto.AccountDto;
 import net.example.banking_app.service.AccountService;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +24,7 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<AccountDto> addAccount(@RequestBody AccountDto accountDto){
         return new ResponseEntity<>(accountService.createAccount(accountDto), HttpStatus.CREATED);
+
     }
 
     // Get Account Rest API
@@ -29,6 +32,7 @@ public class AccountController {
     public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id){
         AccountDto accountDto = accountService.getAccountById(id);
         return ResponseEntity.ok(accountDto);
+
     }
 
     // Deposit Rest API
@@ -38,7 +42,6 @@ public class AccountController {
         Double amount = request.get("amount");
         AccountDto accountDto = accountService.deposit(id, request.get("amount"));
         return ResponseEntity.ok(accountDto);
-
 
     }
 
@@ -50,7 +53,13 @@ public class AccountController {
         AccountDto accountDto = accountService.withdraw(id, request.get("amount"));
         return ResponseEntity.ok(accountDto);
 
+    }
 
+    // Get All Account Rest API
+    @GetMapping
+    public ResponseEntity<List<AccountDto>> getAllAccounts(){
+        List<AccountDto> accounts = accountService.getAllAccounts();
+        return ResponseEntity.ok(accounts);
     }
 
 }
